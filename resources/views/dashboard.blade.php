@@ -33,7 +33,7 @@
         <div class="stat">
             <div class="k">RFID cards assigned</div>
             <div class="v">{{ $cardCount }}</div>
-            <div class="d">@if ($collegeCount > 0){{ min(100, (int) round($cardCount / max($collegeCount, 1) * 100)) }}% of college@else — @endif</div>
+            <div class="d">@if ($collegeCount > 0){{ min(100, (int) round($cardCount / max($collegeCount, 1) * 100)) }}% of college @else — @endif</div>
         </div>
     </section>
 

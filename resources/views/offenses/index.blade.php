@@ -61,7 +61,7 @@
             </div>
         @else
             <table class="ledger">
-                <thead style="background:#d4a017; color:white;">
+                <thead>
                     <tr><th>Case</th><th>Student</th><th>Offense</th><th>Severity</th><th>Date</th><th>Status</th><th style="text-align:right">Actions</th></tr>
                 </thead>
                 <tbody>

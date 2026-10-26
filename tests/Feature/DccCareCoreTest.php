@@ -193,6 +193,53 @@ class DccCareCoreTest extends TestCase
             ->assertJsonPath('exists', false);
     }
 
+    public function test_rfid_lookup_api_accepts_student_number(): void
+    {
+        $student = Student::create([
+            'student_number' => '1162513380',
+            'first_name' => 'Maria',
+            'last_name' => 'Santos',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        StudentRfid::create([
+            'student_id' => $student->id,
+            'card_uid' => 'RFID-SCAN-002',
+            'is_active' => true,
+            'assigned_by' => $this->admin->id,
+            'assigned_at' => now(),
+        ]);
+
+        // Manual entry by ID number resolves the same student and reports their card.
+        $this->actingAs($this->admin)
+            ->getJson('/api/student/1162513380')
+            ->assertOk()
+            ->assertJsonPath('exists', true)
+            ->assertJsonPath('student.full_name', 'Santos, Maria')
+            ->assertJsonPath('card_uid', 'RFID-SCAN-002');
+
+        // A student without a card still resolves; card_uid is null.
+        $cardless = Student::create([
+            'student_number' => '1162514509',
+            'first_name' => 'Ana',
+            'last_name' => 'Cruz',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        $this->actingAs($this->admin)
+            ->getJson('/api/student/1162514509')
+            ->assertOk()
+            ->assertJsonPath('exists', true)
+            ->assertJsonPath('student.full_name', 'Cruz, Ana')
+            ->assertJsonPath('card_uid', null);
+
+        // Unknown numbers still report a miss.
+        $this->actingAs($this->admin)
+            ->getJson('/api/student/9999999999')
+            ->assertOk()
+            ->assertJsonPath('exists', false);
+    }
+
     public function test_offense_crud_flow_with_reference_numbers(): void
     {
         $student = Student::create([

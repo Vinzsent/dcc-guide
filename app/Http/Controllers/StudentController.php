@@ -168,21 +168,33 @@ class StudentController extends Controller
     }
 
     /**
-     * JSON lookup by scanned card UID — used by the RFID scanner page.
+     * JSON lookup by scanned card UID or typed ID number — used by the RFID scanner page.
      */
     public function findByRfid(string $rfid): JsonResponse
     {
-        $card = StudentRfid::activeForCard($rfid);
+        $rfid = mb_strtoupper(trim($rfid));
 
-        if ($card === null) {
-            return response()->json(['exists' => false, 'card_uid' => mb_strtoupper(trim($rfid))]);
+        $card = StudentRfid::activeForCard($rfid);
+        $student = $card?->student;
+
+        // Manual entry on the scanner page uses the visible ID number, not the card UID.
+        if ($student === null) {
+            $student = Student::query()->where('student_number', $rfid)->first();
         }
 
-        $student = $card->student;
+        if ($student === null) {
+            return response()->json(['exists' => false, 'card_uid' => $rfid]);
+        }
+
+        $cardUid = $card?->card_uid
+            ?? StudentRfid::query()
+                ->where('student_id', $student->id)
+                ->where('is_active', true)
+                ->value('card_uid');
 
         return response()->json([
             'exists' => true,
-            'card_uid' => $card->card_uid,
+            'card_uid' => $cardUid,
             'student' => [
                 'id' => $student->id,
                 'student_number' => $student->student_number,

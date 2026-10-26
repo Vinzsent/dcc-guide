@@ -14,7 +14,7 @@
     <div class="page-head">
         <div>
             <h1>Scan a student ID</h1>
-            <p class="sub">Tap a card on the reader, or type the RFID number manually. Both routes open the student's record.</p>
+            <p class="sub">Tap a card on the reader, or type the student's ID number manually. Both routes open the student's record.</p>
         </div>
         <div class="seg" role="tablist">
             <button type="button" class="on" id="tab-scan" onclick="setMode('scan')">
@@ -52,16 +52,16 @@
 
             <div id="pane-manual" hidden>
                 <div class="card manual-card">
-                    <div class="card-head"><h2>Enter the RFID number</h2><span class="meta">as printed on the card</span></div>
+                    <div class="card-head"><h2>Enter the ID number</h2><span class="meta">as printed on the ID</span></div>
                     <div class="card-body">
                         <form onsubmit="lookupManual(event)">
                             <div class="field">
-                                <label for="manual-id">RFID number</label>
-                                <input class="input mono" id="manual-id" placeholder="e.g. RFID-DEMO-00001" autocomplete="off"
+                                <label for="manual-id">ID number</label>
+                                <input class="input mono" id="manual-id" placeholder="e.g. 1162513380" autocomplete="off"
                                        oninput="document.getElementById('id-preview').textContent = (this.value || '— — — — — —').toUpperCase();">
-                                <p class="help">The exact code printed on the back of the ID. You can also search by student number.</p>
+                                <p class="help">The ID number printed on the student's ID. RFID numbers aren't visible on the card, so lookup uses the ID number instead.</p>
                             </div>
-                            <div class="id-preview" style="margin-bottom:16px;"><span class="lbl" style="margin-right:8px">CARD</span><span id="id-preview">— — — — — —</span></div>
+                            <div class="id-preview" style="margin-bottom:16px;"><span class="lbl" style="margin-right:8px">ID NO.</span><span id="id-preview">— — — — — —</span></div>
                             <button class="btn btn-primary" style="width:100%" type="submit">Look up student</button>
                         </form>
                     </div>
@@ -75,7 +75,7 @@
                     <div class="card-body empty" style="padding: 34px 24px;">
                         <div class="glyph"><svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M1.5 5V3a1.5 1.5 0 0 1 1.5-1.5h2M11 1.5h2A1.5 1.5 0 0 1 14.5 3v2M14.5 11v2a1.5 1.5 0 0 1-1.5 1.5h-2M5 14.5H3A1.5 1.5 0 0 1 1.5 13v-2M2.5 8h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
                         <b>No card read yet</b>
-                        Scan or type a card number to open the student's record.
+                        Scan a card or type an ID number to open the student's record.
                     </div>
                 </div>
             </div>
@@ -134,7 +134,7 @@
         ring.classList.add('fired');
         setTimeout(() => ring.classList.remove('fired'), 400);
         document.getElementById('wedge-txt').textContent = cardUid;
-        document.getElementById('stage-kicker').innerHTML = '<span class="dot live"></span> Looking up card…';
+        document.getElementById('stage-kicker').innerHTML = '<span class="dot live"></span> Looking up…';
 
         const slot = document.getElementById('result-slot');
 
@@ -156,7 +156,7 @@
                 return;
             }
 
-            renderResult(data);
+            renderResult(data, cardUid);
         } catch (err) {
             document.getElementById('stage-kicker').innerHTML = '<span class="dot"></span> Reader ready';
             slot.innerHTML =
@@ -168,14 +168,14 @@
         }
     }
 
-    function renderResult(data) {
+    function renderResult(data, queriedId) {
         const now = new Date();
         const time = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
         const slot = document.getElementById('result-slot');
 
         if (data.exists) {
             const s = data.student;
-            recent.unshift({ id: data.card_uid, name: s.full_name, program: s.program, t: time });
+            recent.unshift({ id: data.card_uid || queriedId, name: s.full_name, program: s.program, t: time });
             const statusStamp = s.enrollment_status === 'enrolled'
                 ? '<span class="stamp ok">Enrolled</span>'
                 : '<span class="stamp warn">' + escapeHtml(s.enrollment_status.replace(/_/g, ' ')) + '</span>';
@@ -191,7 +191,7 @@
                     '</div>' +
                     '<div class="found-body">' +
                         '<div class="kv"><span class="k">Student no.</span><span class="v mono">' + escapeHtml(s.student_number) + '</span></div>' +
-                        '<div class="kv"><span class="k">RFID card</span><span class="v mono">' + escapeHtml(data.card_uid) + '</span></div>' +
+                        '<div class="kv"><span class="k">RFID card</span><span class="v mono">' + (data.card_uid ? escapeHtml(data.card_uid) : 'No card assigned') + '</span></div>' +
                         '<div class="kv"><span class="k">Offense record</span><span class="v">' + caseLine + '</span></div>' +
                     '</div>' +
                     '<div class="found-actions">' +
@@ -201,17 +201,17 @@
                 '</div>';
             document.getElementById('stage-kicker').innerHTML = '<span class="dot live"></span> Match found';
         } else {
-            recent.unshift({ id: data.card_uid, name: null, t: time });
+            recent.unshift({ id: queriedId, name: null, t: time });
             slot.innerHTML =
                 '<div class="found">' +
                     '<div class="found-head" style="background: var(--red-50); border-bottom-color: var(--red-100);">' +
                         '<div class="ph">UNKNOWN</div>' +
-                        '<div><h3>Card not recognized</h3><div class="meta">RFID <span class="mono">' + escapeHtml(data.card_uid) + '</span> isn\'t assigned to any student.</div></div>' +
+                        '<div><h3>Not recognized</h3><div class="meta">No student or active card matches <span class="mono">' + escapeHtml(data.card_uid || queriedId) + '</span>.</div></div>' +
                     '</div>' +
-                    '<div class="found-body"><p style="font-size:13.5px;">This could be a new or replacement card. Assign it to a student from their profile, or register it during enrollment.</p></div>' +
+                    '<div class="found-body"><p style="font-size:13.5px;">Check the ID number and try again, or this could be an unregistered card. Assign it to a student from their profile, or register it during enrollment.</p></div>' +
                     '<div class="found-actions"><a class="btn btn-primary" href="/students?no_rfid=1">Find student to assign</a></div>' +
                 '</div>';
-            document.getElementById('stage-kicker').innerHTML = '<span class="dot"></span> Card rejected';
+            document.getElementById('stage-kicker').innerHTML = '<span class="dot"></span> Not recognized';
         }
 
         sessionStorage.setItem('dcc-recent-scans', JSON.stringify(recent.slice(0, 12)));
