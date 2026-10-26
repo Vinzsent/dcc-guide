@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in — DCC Care</title>
+<link rel="stylesheet" href="../../design-systems/dcc-care/ui-kit.css">
+<style>
+  body { display: grid; grid-template-columns: minmax(420px, 46%) 1fr; min-height: 100vh; }
+  @media (max-width: 860px) { body { grid-template-columns: 1fr; } .brandpane { display: none; } }
+
+  /* Brand pane */
+  .brandpane {
+    background:
+      radial-gradient(1100px 520px at -12% 118%, rgba(212,160,23,0.14), transparent 55%),
+      linear-gradient(168deg, var(--green-800) 0%, var(--green-900) 62%, var(--green-950) 100%);
+    color: var(--fg-on-brand);
+    display: flex; flex-direction: column; padding: 48px 52px; position: relative; overflow: hidden;
+  }
+  .bp-mark { display: flex; align-items: center; gap: 12px; }
+  .bp-mark .brand-mark { width: 42px; height: 42px; font-size: 18px; }
+  .bp-mark .brand-name { font-size: 20px; }
+  .bp-lede { margin-top: auto; max-width: 40ch; }
+  .bp-lede h1 { font: 600 var(--step-5)/1.06 var(--font-display); letter-spacing: -0.015em; }
+  .bp-lede h1 em { font-style: normal; color: var(--gold-400); }
+  .bp-lede p { margin-top: 14px; font-size: 16px; line-height: 1.6; color: rgba(244,249,245,0.72); }
+  .bp-records {
+    margin-top: 34px; display: grid; gap: 0;
+    border-top: 1px solid var(--line-dark); font: 400 12.5px/1 var(--font-mono);
+  }
+  .bp-records div {
+    display: flex; justify-content: space-between; gap: 24px;
+    padding: 11px 2px; border-bottom: 1px solid var(--line-dark); color: rgba(244,249,245,0.55);
+  }
+  .bp-records b { color: rgba(244,249,245,0.9); font-weight: 500; }
+  .bp-foot { margin-top: 40px; font-size: 12px; color: rgba(244,249,245,0.45); }
+  .rule-vert { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--line-dark); }
+
+  /* Sign-in pane */
+  .signpane { display: grid; place-items: center; padding: 40px 24px; background: var(--paper-1); }
+  .signcard { width: 100%; max-width: 392px; }
+  .signcard h2 { font: 600 26px/1.15 var(--font-display); color: var(--fg-strong); }
+  .signcard .sub { margin: 8px 0 26px; color: var(--fg-muted); }
+  .field-row { position: relative; }
+  .reveal {
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    border: none; background: none; color: var(--fg-muted); cursor: pointer;
+    font-size: 12px; font-weight: 600; padding: 6px 8px; border-radius: var(--r-sm);
+  }
+  .reveal:hover { color: var(--fg-strong); background: var(--surface-sunken); }
+  .pw-wrap .input { padding-right: 64px; }
+  .between { display: flex; align-items: center; justify-content: space-between; margin: 4px 0 18px; font-size: 13px; }
+  .check { display: flex; gap: 8px; align-items: center; color: var(--fg-default); cursor: pointer; }
+  .check input { accent-color: var(--green-800); width: 15px; height: 15px; }
+  .btn-block { width: 100%; padding: 12px; font-size: 15px; }
+  .signin-note { margin-top: 26px; padding: 12px 14px; border: 1px dashed var(--line-2); border-radius: var(--r-sm); font-size: 12.5px; color: var(--fg-muted); background: var(--surface-primary); }
+  .signin-note b { color: var(--fg-strong); }
+</style>
+</head>
+<body>
+
+  <aside class="brandpane">
+    <div class="rule-vert" style="left: 34px; opacity:.5"></div>
+    <div class="bp-mark">
+      <div class="brand-mark">D</div>
+      <div>
+        <div class="brand-name">DCC Care</div>
+        <div class="brand-sub">Discipline Office</div>
+      </div>
+    </div>
+
+    <div class="bp-lede">
+      <h1>Every record, <em>on the record.</em></h1>
+      <p>The discipline office's ledger — student registry, offense records, and RFID gate scanning in one place.</p>
+    </div>
+
+    <div class="bp-records" aria-hidden="true">
+      <div><span>CASE&nbsp;OFF-2026-0041</span><b>Cutting Classes</b></div>
+      <div><span>CASE&nbsp;OFF-2026-0040</span><b>Improper Uniform</b></div>
+      <div><span>CASE&nbsp;OFF-2026-0039</span><b>Discourtesy</b></div>
+    </div>
+
+    <div class="bp-foot">© 2026 DCC Care · Discipline Office Ledger</div>
+  </aside>
+
+  <main class="signpane">
+    <div class="signcard">
+      <h2>Sign in</h2>
+      <p class="sub">Use your staff account. Accounts are issued by the administrator.</p>
+
+      <div class="toast error" style="margin-bottom: 18px;">
+        <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3.4M8 10.8v.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Those credentials didn't match our records.
+      </div>
+
+      <form action="../dashboard/dashboard.html" method="get">
+        <div class="field">
+          <label for="username">Username</label>
+          <input class="input" id="username" type="text" placeholder="e.g. j.santos" value="j.santos" autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="field-row pw-wrap">
+            <input class="input" id="password" type="password" placeholder="Your password" value="discipline-2026">
+            <button type="button" class="reveal">Show</button>
+          </div>
+        </div>
+        <div class="between">
+          <label class="check"><input type="checkbox" checked> Keep me signed in</label>
+          <a href="#">Forgot password?</a>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+
+      <div class="signin-note">
+        <b>Heads up:</b> students don't sign in here. Enrollment and RFID registration are done by staff on the
+        <a href="#">Students</a> page after signing in.
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

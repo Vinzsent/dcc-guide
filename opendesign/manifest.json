@@ -1,0 +1,108 @@
+{
+    "generated":  "2026-10-22T07:03:52Z",
+    "sections":  [
+                     {
+                         "id":  "mockups",
+                         "label":  "Mockups",
+                         "groups":  [
+                                        {
+                                            "slug":  "auth",
+                                            "files":  [
+                                                          {
+                                                              "label":  "login.html",
+                                                              "path":  "mockups/auth/login.html"
+                                                          }
+                                                      ]
+                                        },
+                                        {
+                                            "slug":  "dashboard",
+                                            "files":  [
+                                                          {
+                                                              "label":  "dashboard.html",
+                                                              "path":  "mockups/dashboard/dashboard.html"
+                                                          }
+                                                      ]
+                                        },
+                                        {
+                                            "slug":  "rfid-scanner",
+                                            "files":  [
+                                                          {
+                                                              "label":  "scanner.html",
+                                                              "path":  "mockups/rfid-scanner/scanner.html"
+                                                          }
+                                                      ]
+                                        },
+                                        {
+                                            "slug":  "students",
+                                            "files":  [
+                                                          {
+                                                              "label":  "index.html",
+                                                              "path":  "mockups/students/index.html"
+                                                          },
+                                                          {
+                                                              "label":  "create.html",
+                                                              "path":  "mockups/students/create.html"
+                                                          },
+                                                          {
+                                                              "label":  "profile.html",
+                                                              "path":  "mockups/students/profile.html"
+                                                          }
+                                                      ]
+                                        },
+                                        {
+                                            "slug":  "offenses",
+                                            "files":  [
+                                                          {
+                                                              "label":  "index.html",
+                                                              "path":  "mockups/offenses/index.html"
+                                                          },
+                                                          {
+                                                              "label":  "create.html",
+                                                              "path":  "mockups/offenses/create.html"
+                                                          }
+                                                      ]
+                                        },
+                                        {
+                                            "slug":  "users",
+                                            "files":  [
+                                                          {
+                                                              "label":  "index.html",
+                                                              "path":  "mockups/users/index.html"
+                                                          }
+                                                      ]
+                                        }
+                                    ]
+                     },
+                     {
+                         "id":  "design-systems",
+                         "label":  "Design Systems",
+                         "groups":  [
+                                        {
+                                            "slug":  "dcc-care",
+                                            "files":  [
+                                                          {
+                                                              "label":  "README.md",
+                                                              "path":  "design-systems/dcc-care/README.md"
+                                                          },
+                                                          {
+                                                              "label":  "SKILL.md",
+                                                              "path":  "design-systems/dcc-care/SKILL.md"
+                                                          },
+                                                          {
+                                                              "label":  "tokens/colors_and_type.css",
+                                                              "path":  "design-systems/dcc-care/tokens/colors_and_type.css"
+                                                          },
+                                                          {
+                                                              "label":  "ui-kit.css",
+                                                              "path":  "design-systems/dcc-care/ui-kit.css"
+                                                          },
+                                                          {
+                                                              "label":  "brand/voice-and-tone.md",
+                                                              "path":  "design-systems/dcc-care/brand/voice-and-tone.md"
+                                                          }
+                                                      ]
+                                        }
+                                    ]
+                     }
+                 ]
+}

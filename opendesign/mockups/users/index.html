@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accounts — DCC Care</title>
+<link rel="stylesheet" href="../../design-systems/dcc-care/ui-kit.css">
+<style>
+  .cell-actions { white-space: nowrap; text-align: right; }
+  .modal-back {
+    position: fixed; inset: 0; background: rgba(15, 49, 34, 0.45);
+    display: grid; place-items: center; z-index: 50; backdrop-filter: blur(2px);
+  }
+  .modal {
+    width: 460px; max-width: calc(100vw - 32px);
+    background: var(--surface-primary); border-radius: var(--r-lg);
+    box-shadow: var(--shadow-3); overflow: hidden;
+  }
+  .modal-head { padding: 18px 20px 0; }
+  .modal-head h3 { font: 600 20px/1.2 var(--font-display); color: var(--fg-strong); }
+  .modal-body { padding: 16px 20px 4px; }
+  .modal-foot {
+    display: flex; justify-content: flex-end; gap: 8px;
+    padding: 14px 20px; background: var(--surface-sunken); border-top: 1px solid var(--border-subtle); margin-top: 14px;
+  }
+  .role-hint { font-size: 12px; color: var(--fg-muted); line-height: 1.5; padding: 10px 12px; background: var(--surface-sunken); border-radius: var(--r-sm); border: 1px dashed var(--line-2); }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">D</div>
+      <div>
+        <div class="brand-name">DCC Care</div>
+        <div class="brand-sub">Discipline Office</div>
+      </div>
+    </div>
+    <div class="nav-section">Office</div>
+    <nav class="nav">
+      <a href="../dashboard/dashboard.html"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="1.5" width="5.4" height="5.4" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9.1" y="1.5" width="5.4" height="5.4" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1.5" y="9.1" width="5.4" height="5.4" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9.1" y="9.1" width="5.4" height="5.4" rx="1" stroke="currentColor" stroke-width="1.3"/></svg><span>Dashboard</span></a>
+      <a class="scan-cta" href="../rfid-scanner/scanner.html"><svg viewBox="0 0 16 16" fill="none"><path d="M1.5 5V3a1.5 1.5 0 0 1 1.5-1.5h2M11 1.5h2A1.5 1.5 0 0 1 14.5 3v2M14.5 11v2a1.5 1.5 0 0 1-1.5 1.5h-2M5 14.5H3A1.5 1.5 0 0 1 1.5 13v-2M2.5 8h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>RFID Scan</span></a>
+    </nav>
+    <div class="nav-section">Records</div>
+    <nav class="nav">
+      <a href="../students/index.html"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="2.7" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 14c.6-2.9 2.8-4.3 5.5-4.3S12.9 11.1 13.5 14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span>Students</span></a>
+      <a href="../offenses/index.html"><svg viewBox="0 0 16 16" fill="none"><path d="M3 2h8.5L13.5 4v10H3V2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5.5 6h5M5.5 9h5M5.5 12h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span>Offense Ledger</span></a>
+      <a class="active" href="index.html"><svg viewBox="0 0 16 16" fill="none"><circle cx="5.6" cy="5.4" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M1.8 13.2c.5-2.2 2-3.3 3.8-3.3s3.3 1.1 3.8 3.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="11.4" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/><path d="M10.6 9.9c1.8 0 3 1 3.5 2.8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg><span>Accounts</span></a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="who">
+        <div class="avatar">JS</div>
+        <div>
+          <div class="who-name">Juan Santos</div>
+          <div class="who-role">Discipline Coordinator</div>
+        </div>
+      </div>
+      <a href="../auth/login.html" style="display:flex; align-items:center; gap:8px; margin-top:12px; color:rgba(244,249,245,.7); font-size:12.5px; font-weight:500;">Sign out</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="crumbs"><a href="../dashboard/dashboard.html">Dashboard</a> <span class="sep">/</span> <b>Accounts</b></div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('modal').style.display='grid'">Add account</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1>Staff accounts</h1>
+          <p class="sub">Only administrators can create or deactivate accounts. Coordinators can file and edit cases.</p>
+        </div>
+      </div>
+
+      <section class="card table-card">
+        <table class="ledger">
+          <thead>
+            <tr><th>Name</th><th>Username</th><th>Role</th><th>Status</th><th>Last sign-in</th><th style="text-align:right">Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="name">Juan Santos</span><span class="sub">Discipline Coordinator</span></td>
+              <td class="mono">j.santos</td>
+              <td><span class="stamp info">Coordinator</span></td>
+              <td><span class="stamp ok">Active</span></td>
+              <td>Today, 7:12 am</td>
+              <td class="cell-actions"><a class="btn-link" href="#">Edit</a><a class="btn-link danger" style="visibility:hidden">Deactivate</a></td>
+            </tr>
+            <tr>
+              <td><span class="name">Maria Ramos</span><span class="sub">Registrar</span></td>
+              <td class="mono">m.ramos</td>
+              <td><span class="stamp info">Coordinator</span></td>
+              <td><span class="stamp ok">Active</span></td>
+              <td>Today, 6:58 am</td>
+              <td class="cell-actions"><a class="btn-link" href="#">Edit</a><a class="btn-link danger">Deactivate</a></td>
+            </tr>
+            <tr>
+              <td><span class="name">Pedro Garcia</span><span class="sub">Gate security</span></td>
+              <td class="mono">p.garcia</td>
+              <td><span class="stamp muted">Scanner</span></td>
+              <td><span class="stamp ok">Active</span></td>
+              <td>Oct 21, 2026</td>
+              <td class="cell-actions"><a class="btn-link" href="#">Edit</a><a class="btn-link danger">Deactivate</a></td>
+            </tr>
+            <tr>
+              <td><span class="name">Ana Lim</span><span class="sub">Principal's office</span></td>
+              <td class="mono">a.lim</td>
+              <td><span class="stamp major">Admin</span></td>
+              <td><span class="stamp ok">Active</span></td>
+              <td>Oct 20, 2026</td>
+              <td class="cell-actions"><a class="btn-link" href="#">Edit</a><a class="btn-link danger">Deactivate</a></td>
+            </tr>
+            <tr>
+              <td><span class="name">Ramon Torres</span><span class="sub">Former coordinator</span></td>
+              <td class="mono">r.torres</td>
+              <td><span class="stamp info">Coordinator</span></td>
+              <td><span class="stamp muted">Deactivated</span></td>
+              <td>May 3, 2026</td>
+              <td class="cell-actions"><a class="btn-link" href="#">Edit</a><a class="btn-link" onclick="return false" style="color:var(--link)">Reactivate</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="table-foot">
+          <span class="info">4 active · 1 deactivated</span>
+        </div>
+      </section>
+
+      <div class="toast" style="margin-top: 16px;">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M2.5 8.5 6 12l7.5-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Deactivated accounts keep their case history but can no longer sign in.
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add account modal (demo state) -->
+<div class="modal-back" id="modal" style="display:none">
+  <div class="modal" role="dialog" aria-label="Add account">
+    <div class="modal-head">
+      <h3>Add staff account</h3>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Full name <span class="req">*</span></label>
+        <input class="input" placeholder="e.g. Carla Domingo">
+      </div>
+      <div class="field">
+        <label>Username <span class="req">*</span></label>
+        <input class="input mono" placeholder="c.domingo (auto-suggested)">
+      </div>
+      <div class="field">
+        <label>Role <span class="req">*</span></label>
+        <select class="select">
+          <option>Coordinator — full records + filing</option>
+          <option>Scanner — RFID scanning only</option>
+          <option>Admin — accounts and settings</option>
+        </select>
+      </div>
+      <div class="role-hint">A temporary password is generated on save. The staff member changes it at first sign-in.</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="document.getElementById('modal').style.display='none'">Cancel</button>
+      <button class="btn btn-primary" onclick="document.getElementById('modal').style.display='none'">Create account</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

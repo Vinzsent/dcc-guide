@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File an offense — DCC Care</title>
+<link rel="stylesheet" href="../../design-systems/dcc-care/ui-kit.css">
+<style>
+  .formcard { max-width: 880px; }
+  .student-pick {
+    display: flex; align-items: center; gap: 14px;
+    border: 1px solid var(--green-100); background: var(--surface-highlight);
+    border-radius: var(--r-md); padding: 14px 16px;
+  }
+  .student-pick .ph { width: 44px; height: 52px; border-radius: var(--r-sm); flex-shrink: 0; }
+  .student-pick b { font: 600 15px/1.2 var(--font-display); color: var(--fg-strong); display: block; }
+  .student-pick span { font-size: 12.5px; color: var(--fg-muted); }
+  .student-pick .chg { margin-left: auto; }
+  .typegrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  @media (max-width: 860px) { .typegrid { grid-template-columns: repeat(2, 1fr); } }
+  .typecard { position: relative; }
+  .typecard input { position: absolute; opacity: 0; inset: 0; }
+  .typecard label {
+    display: block; padding: 12px 14px; cursor: pointer;
+    border: 1px solid var(--border-strong); border-radius: var(--r-md);
+    transition: all var(--t-fast); background: var(--surface-primary);
+  }
+  .typecard label:hover { border-color: var(--green-600); }
+  .typecard input:checked + label {
+    border-color: var(--green-800); background: var(--surface-highlight);
+    box-shadow: inset 0 0 0 1px var(--green-800);
+  }
+  .typecard input:focus-visible + label { box-shadow: var(--focus-ring); }
+  .typecard b { display: block; font-weight: 600; font-size: 13.5px; color: var(--fg-strong); margin-bottom: 7px; }
+  .casebanner {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    background: var(--green-950); color: var(--fg-on-brand);
+    border-radius: var(--r-md); padding: 13px 16px; margin-bottom: 18px;
+    box-shadow: var(--shadow-2);
+  }
+  .casebanner .no { font: 600 16px/1 var(--font-mono); letter-spacing: 0.08em; color: var(--gold-400); }
+  .casebanner .lbl { font: 600 10.5px/1 var(--font-ui); letter-spacing: 0.16em; text-transform: uppercase; color: rgba(244,249,245,.55); margin-right: 10px; }
+  .savebar {
+    position: sticky; bottom: 0; z-index: 30;
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface-primary); border: 1px solid var(--border-subtle);
+    border-radius: var(--r-md); padding: 12px 16px; margin-top: 18px; box-shadow: var(--shadow-2);
+  }
+  .savebar .note { font-size: 12.5px; color: var(--fg-muted); margin-left: auto; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">D</div>
+      <div>
+        <div class="brand-name">DCC Care</div>
+        <div class="brand-sub">Discipline Office</div>
+      </div>
+    </div>
+    <div class="nav-section">Office</div>
+    <nav class="nav">
+      <a href="../dashboard/dashboard.html"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="1.5" width="5.4" height="5.4" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9.1" y="1.5" width="5.4" height="5.4" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1.5" y="9.1" width="5.4" height="5.4" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9.1" y="9.1" width="5.4" height="5.4" rx="1" stroke="currentColor" stroke-width="1.3"/></svg><span>Dashboard</span></a>
+      <a class="scan-cta" href="../rfid-scanner/scanner.html"><svg viewBox="0 0 16 16" fill="none"><path d="M1.5 5V3a1.5 1.5 0 0 1 1.5-1.5h2M11 1.5h2A1.5 1.5 0 0 1 14.5 3v2M14.5 11v2a1.5 1.5 0 0 1-1.5 1.5h-2M5 14.5H3A1.5 1.5 0 0 1 1.5 13v-2M2.5 8h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>RFID Scan</span></a>
+    </nav>
+    <div class="nav-section">Records</div>
+    <nav class="nav">
+      <a href="../students/index.html"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="2.7" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 14c.6-2.9 2.8-4.3 5.5-4.3S12.9 11.1 13.5 14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span>Students</span></a>
+      <a class="active" href="index.html"><svg viewBox="0 0 16 16" fill="none"><path d="M3 2h8.5L13.5 4v10H3V2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5.5 6h5M5.5 9h5M5.5 12h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span>Offense Ledger</span></a>
+      <a href="../users/index.html"><svg viewBox="0 0 16 16" fill="none"><circle cx="5.6" cy="5.4" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M1.8 13.2c.5-2.2 2-3.3 3.8-3.3s3.3 1.1 3.8 3.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="11.4" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/><path d="M10.6 9.9c1.8 0 3 1 3.5 2.8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg><span>Accounts</span></a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="who">
+        <div class="avatar">JS</div>
+        <div>
+          <div class="who-name">Juan Santos</div>
+          <div class="who-role">Discipline Coordinator</div>
+        </div>
+      </div>
+      <a href="../auth/login.html" style="display:flex; align-items:center; gap:8px; margin-top:12px; color:rgba(244,249,245,.7); font-size:12.5px; font-weight:500;">Sign out</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="crumbs"><a href="../dashboard/dashboard.html">Dashboard</a> <span class="sep">/</span> <a href="index.html">Offense ledger</a> <span class="sep">/</span> <b>New case</b></div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1>File an offense</h1>
+          <p class="sub">Opens a numbered case in the ledger. The student and their guardians can be notified after filing.</p>
+        </div>
+      </div>
+
+      <div class="casebanner">
+        <span><span class="lbl">Opening case</span><span class="no">OFF-2026-0042</span></span>
+        <span style="font-size:12px; color: rgba(244,249,245,.6);">Wednesday, October 22, 2026 · filed by J. Santos</span>
+      </div>
+
+      <form class="formcard" action="../students/profile.html" method="get">
+        <section class="card" style="margin-bottom: 18px;">
+          <div class="card-head"><h2>Student</h2><span class="meta">from your last scan</span></div>
+          <div class="card-body">
+            <div class="student-pick">
+              <div class="ph">ID&nbsp;PHOTO</div>
+              <div>
+                <b>Dela Cruz, Marco Reyes</b>
+                <span>2024-0182 · STEM · Grade 11 — A · RFID 04A3B7F2</span>
+              </div>
+              <a class="btn btn-ghost btn-sm chg" href="../rfid-scanner/scanner.html">Change student</a>
+            </div>
+            <p class="help" style="margin-top:10px;">Came from the RFID scanner. You can also search the registry by name or student number.</p>
+          </div>
+        </section>
+
+        <section class="card" style="margin-bottom: 18px;">
+          <div class="card-head"><h2>Offense type</h2><span class="meta">severity follows the type</span></div>
+          <div class="card-body">
+            <div class="typegrid">
+              <div class="typecard"><input type="radio" name="otype" id="ot1"><label for="ot1"><b>Improper uniform</b><span class="stamp minor">Minor</span></label></div>
+              <div class="typecard"><input type="radio" name="otype" id="ot2" checked><label for="ot2"><b>Cutting classes</b><span class="stamp major">Major</span></label></div>
+              <div class="typecard"><input type="radio" name="otype" id="ot3"><label for="ot3"><b>Littering</b><span class="stamp minor">Minor</span></label></div>
+              <div class="typecard"><input type="radio" name="otype" id="ot4"><label for="ot4"><b>Discourtesy to faculty</b><span class="stamp serious">Serious</span></label></div>
+              <div class="typecard"><input type="radio" name="otype" id="ot5"><label for="ot5"><b>Fighting</b><span class="stamp grave">Grave</span></label></div>
+              <div class="typecard"><input type="radio" name="otype" id="ot6"><label for="ot6"><b>Vandalism</b><span class="stamp grave">Grave</span></label></div>
+            </div>
+            <p class="help" style="margin-top:10px;">Severities are managed under Ledger settings. Types shown are the most filed this month.</p>
+          </div>
+        </section>
+
+        <section class="card" style="margin-bottom: 0;">
+          <div class="card-head"><h2>Details</h2></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field">
+                <label>Date of offense <span class="req">*</span></label>
+                <input class="input" type="date" value="2026-10-22">
+              </div>
+              <div class="field">
+                <label>Sanction / follow-up</label>
+                <select class="select">
+                  <option selected>Written reprimand</option>
+                  <option>Counseling session</option>
+                  <option>Parent conference</option>
+                  <option>Community service</option>
+                  <option>Disciplinary hearing</option>
+                  <option>None yet — to be decided</option>
+                </select>
+              </div>
+              <div class="field span-2">
+                <label>Description <span class="req">*</span></label>
+                <textarea class="input" rows="4" placeholder="What happened, where, and who witnessed it…">Caught past the gate at 9:20 am during a scheduled class. Advised to secure a gate pass next time.</textarea>
+                <p class="help">Stick to facts and direct quotes. This text appears verbatim on the printed case record.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="savebar">
+          <button class="btn btn-primary" type="submit">File case OFF-2026-0042</button>
+          <a class="btn btn-ghost" href="index.html">Cancel</a>
+          <span class="note">Filing returns to the student's profile with the new case on top.</span>
+        </div>
+      </form>
+    </main>
+  </div>
+</div>
+</body>
+</html>

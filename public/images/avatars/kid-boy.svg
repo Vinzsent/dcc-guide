@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 144" role="img" aria-label="Default student avatar">
+  <rect width="120" height="144" fill="#EEF5F0"/>
+  <path d="M28 144 C28 118 40 106 60 106 C80 106 92 118 92 144 Z" fill="#14442C"/>
+  <path d="M52 108 L60 118 L68 108 Z" fill="#FFFFFF"/>
+  <rect x="52" y="92" width="16" height="16" rx="7" fill="#EDB98A"/>
+  <circle cx="29" cy="68" r="5.5" fill="#F2C6A0"/>
+  <circle cx="91" cy="68" r="5.5" fill="#F2C6A0"/>
+  <ellipse cx="60" cy="66" rx="30" ry="30" fill="#F6CBA6"/>
+  <path d="M30 64 C30 38 44 30 60 30 C76 30 90 38 90 64 C90 54 84 47 76 45 C68 43 62 44 56 46 C48 48 38 52 34 60 C32 62 30 63 30 64 Z" fill="#3B2E2A"/>
+  <circle cx="48" cy="68" r="3" fill="#14231B"/>
+  <circle cx="72" cy="68" r="3" fill="#14231B"/>
+  <circle cx="43" cy="76" r="4" fill="#F2A98B" opacity="0.55"/>
+  <circle cx="77" cy="76" r="4" fill="#F2A98B" opacity="0.55"/>
+  <path d="M51 79 Q60 87 69 79" stroke="#14231B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg>
