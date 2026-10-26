@@ -1,0 +1,45 @@
+$content = @"
+APP_NAME=DCC Care
+APP_ENV=local
+APP_DEBUG=true
+APP_KEY=
+APP_URL=http://dcc-care.test
+
+LOG_CHANNEL=stack
+LOG_DEPRECATIONS_CHANNEL=stack
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=dcc_care
+DB_USERNAME=root
+DB_PASSWORD=
+
+SESSION_DRIVER=array
+SESSION_LIFETIME=120
+
+BCRYPT_ROUNDS=12
+
+LOG_LEVEL=debug
+
+BROADCAST_CONNECTION=log
+
+CACHE_DRIVER=file
+CACHE_STORE=file
+
+QUEUE_CONNECTION=sync
+
+MAIL_MAILER=log
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=hello@example.com
+MAIL_FROM_NAME="${APP_NAME}"
+
+VITE_APP_NAME="${APP_NAME}"
+"@
+
+$content | Set-Content -Path "c:\laragon\www\dcc-care\.env" -Encoding UTF8
+Write-Host "Done: .env updated"
