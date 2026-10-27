@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function (): void {
 
     // Bulk RFID card registration
     Route::get('rfid/register', [RfidStationController::class, 'show'])->name('rfid.register');
+    Route::get('rfid/unassign', [RfidStationController::class, 'unassign'])->name('rfid.unassign');
     Route::post('rfid/register/assign', [RfidStationController::class, 'assign'])->name('rfid.bulk.assign');
     Route::post('rfid/register/undo', [RfidStationController::class, 'undo'])->name('rfid.bulk.undo');
 
