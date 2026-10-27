@@ -1,5 +1,5 @@
 @php($severities = ['minor' => 'Minor', 'major' => 'Major', 'critical' => 'Critical'])
-@php($actions = ['' => 'None yet — to be decided', 'counseling' => 'Counseling session', 'reprimand' => 'Written reprimand', 'parent_conference' => 'Parent conference', 'community_service' => 'Community service', 'hearing' => 'Disciplinary hearing'])
+@php($actions = ['' => 'None yet — to be decided', 'counseling' => 'Counseling session', 'reprimand' => 'Written reprimand', 'open_reprimand' => 'Open reprimand', 'parent_conference' => 'Parent conference', 'community_service' => 'Community service', 'hearing' => 'Disciplinary hearing'])
 
 <section class="card" style="margin-bottom: 18px;">
     <div class="card-head"><h2>Student</h2>@if (isset($student))<span class="meta">pre-selected</span>@endif</div>
@@ -76,7 +76,7 @@
                 @error('incident_at')<p class="err">{{ $message }}</p>@enderror
             </div>
             <div class="field">
-                <label for="location">Location</label>
+                <label for="location">Location <span class="opt">optional</span></label>
                 <input class="input" id="location" name="location" value="{{ old('location', $offense->location ?? '') }}" placeholder="e.g. Main gate, Room 204">
             </div>
             <div class="field span-2">
@@ -86,7 +86,7 @@
                 <p class="help">Stick to facts and direct quotes. This text appears verbatim on the case record.</p>
             </div>
             <div class="field">
-                <label for="witnesses">Witnesses</label>
+                <label for="witnesses">Witnesses <span class="opt">optional</span></label>
                 <input class="input" id="witnesses" name="witnesses" value="{{ old('witnesses', $offense->witnesses ?? '') }}" placeholder="Names, comma-separated">
             </div>
             @unless (isset($offense))
