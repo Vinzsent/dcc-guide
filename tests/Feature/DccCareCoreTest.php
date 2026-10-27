@@ -9,6 +9,7 @@ use App\Models\StudentOffense;
 use App\Models\StudentRfid;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -60,6 +61,145 @@ class DccCareCoreTest extends TestCase
             ->assertSee('Juan');
     }
 
+    public function test_students_index_lists_college_students_only(): void
+    {
+        $college = Student::create([
+            'student_number' => '2026-0051',
+            'first_name' => 'Carlo',
+            'last_name' => 'Mendoza',
+            'education_level' => 'College',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        $shs = Student::create([
+            'student_number' => '2026-0052',
+            'first_name' => 'Bea',
+            'last_name' => 'Torres',
+            'education_level' => 'Senior High School',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        $this->actingAs($this->admin)
+            ->get('/students')
+            ->assertOk()
+            ->assertSee('Mendoza, Carlo')
+            ->assertDontSee('Torres, Bea');
+    }
+
+    public function test_dashboard_counts_cases_by_incident_date_per_month_and_school_year(): void
+    {
+        $student = Student::create([
+            'student_number' => '2026-0041',
+            'first_name' => 'Ivy',
+            'last_name' => 'Navarro',
+            'education_level' => 'College',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        $type = $this->createOffenseType();
+
+        // Happened this month — inside the current school year.
+        StudentOffense::create([
+            'reference_no' => 'OFF-2026-0101',
+            'student_id' => $student->id,
+            'offense_type_id' => $type->id,
+            'incident_at' => now(),
+            'description' => 'Current month case',
+            'status' => 'recorded',
+            'reported_by' => $this->admin->id,
+            'recorded_at' => now(),
+        ]);
+
+        // Happened in a prior school year — must not inflate month or SY counts,
+        // even though imported records were entered into the database recently.
+        StudentOffense::create([
+            'reference_no' => 'OFF-2024-0102',
+            'student_id' => $student->id,
+            'offense_type_id' => $type->id,
+            'incident_at' => Carbon::parse('2024-02-10 09:00'),
+            'description' => 'Archived case',
+            'status' => 'closed',
+            'reported_by' => $this->admin->id,
+            'recorded_at' => now(),
+        ]);
+
+        // A non-college student's case must be excluded from every dashboard figure.
+        $shs = Student::create([
+            'student_number' => '2026-0042',
+            'first_name' => 'Ella',
+            'last_name' => 'Gomez',
+            'education_level' => 'Senior High School',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        StudentOffense::create([
+            'reference_no' => 'OFF-2026-0103',
+            'student_id' => $shs->id,
+            'offense_type_id' => $type->id,
+            'incident_at' => now(),
+            'description' => 'Non-college case',
+            'status' => 'recorded',
+            'reported_by' => $this->admin->id,
+            'recorded_at' => now(),
+        ]);
+
+        $response = $this->actingAs($this->admin)->get('/dashboard');
+        $response->assertOk()
+            ->assertSee(StudentOffense::currentSchoolYear()['label']);
+
+        $this->assertSame(1, $response->viewData('monthCases'));
+        $this->assertSame(1, $response->viewData('syCases'));
+        $this->assertSame(1, $response->viewData('pendingCount'));
+        $this->assertSame(2, $response->viewData('recentOffenses')->count());
+
+        $this->assertSame(1, StudentOffense::query()->forCollegeStudents()->forSchoolYear()->count());
+        $this->assertSame(1, StudentOffense::query()
+            ->forCollegeStudents()
+            ->whereMonth('incident_at', now()->month)
+            ->whereYear('incident_at', now()->year)
+            ->count());
+    }
+
+    public function test_dashboard_counts_only_college_rfid_cards(): void
+    {
+        $college = Student::create([
+            'student_number' => '2026-0061',
+            'first_name' => 'Paolo',
+            'last_name' => 'Reyes',
+            'education_level' => 'College',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        $shs = Student::create([
+            'student_number' => '2026-0062',
+            'first_name' => 'Ella',
+            'last_name' => 'Gomez',
+            'education_level' => 'Senior High School',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        StudentRfid::create([
+            'student_id' => $college->id,
+            'card_uid' => 'RFID-COLL-001',
+            'is_active' => true,
+            'assigned_by' => $this->admin->id,
+            'assigned_at' => now(),
+        ]);
+
+        StudentRfid::create([
+            'student_id' => $shs->id,
+            'card_uid' => 'RFID-SHS-001',
+            'is_active' => true,
+            'assigned_by' => $this->admin->id,
+            'assigned_at' => now(),
+        ]);
+
+        // Only the college student's card counts toward the dashboard stat.
+        $response = $this->actingAs($this->admin)->get('/dashboard');
+        $response->assertOk();
+        $this->assertSame(1, $response->viewData('cardCount'));
+    }
+
     public function test_student_crud_flow(): void
     {
         // Create
@@ -69,10 +209,10 @@ class DccCareCoreTest extends TestCase
             'middle_name' => 'Reyes',
             'last_name' => 'Dela Cruz',
             'gender' => 'male',
-            'education_level' => 'Senior High School',
-            'course_or_grade' => 'STEM',
-            'year_level' => '11',
-            'section' => 'STEM-A',
+            'education_level' => 'College',
+            'course_or_grade' => 'BSIT',
+            'year_level' => '1',
+            'section' => 'BSIT-A',
             'enrollment_status' => 'enrolled',
             'card_uid' => 'RFID-NEW-0001',
         ]);
@@ -112,16 +252,16 @@ class DccCareCoreTest extends TestCase
                 'last_name' => 'Dela Cruz',
                 'suffix' => 'Jr.',
                 'gender' => 'male',
-                'education_level' => 'Senior High School',
-                'course_or_grade' => 'STEM',
-                'year_level' => '11',
-                'section' => 'STEM-B',
+                'education_level' => 'College',
+                'course_or_grade' => 'BSIT',
+                'year_level' => '1',
+                'section' => 'BSIT-B',
                 'enrollment_status' => 'enrolled',
             ])
             ->assertRedirect()
             ->assertSessionHas('success');
 
-        $this->assertDatabaseHas('students', ['id' => $student->id, 'section' => 'STEM-B', 'suffix' => 'Jr.', 'gender' => 'male']);
+        $this->assertDatabaseHas('students', ['id' => $student->id, 'section' => 'BSIT-B', 'suffix' => 'Jr.', 'gender' => 'male']);
 
         // Unassign card
         $this->actingAs($this->admin)
@@ -515,12 +655,48 @@ class DccCareCoreTest extends TestCase
             ->assertSee('Type manually');
     }
 
+    public function test_student_search_returns_college_students_only(): void
+    {
+        $college = Student::create([
+            'student_number' => '2026-0071',
+            'first_name' => 'Carlo',
+            'last_name' => 'Mendoza',
+            'education_level' => 'College',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        $shs = Student::create([
+            'student_number' => '2026-0072',
+            'first_name' => 'Bea',
+            'last_name' => 'Torres',
+            'education_level' => 'Senior High School',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        // The offense form's registry typeahead lists college students only.
+        $this->actingAs($this->admin)
+            ->getJson('/students/search?q=Mendoza')
+            ->assertOk()
+            ->assertJsonPath('results.0.full_name', 'Mendoza, Carlo')
+            ->assertJsonMissing(['full_name' => 'Torres, Bea']);
+
+        // An empty query lists college students only as well.
+        $this->actingAs($this->admin)
+            ->getJson('/students/search')
+            ->assertOk()
+            ->assertJsonMissing(['full_name' => 'Torres, Bea']);
+
+        $this->assertSame('College', $college->education_level);
+        $this->assertSame('Senior High School', $shs->education_level);
+    }
+
     public function test_bulk_rfid_registration_flow(): void
     {
         $first = Student::create([
             'student_number' => '2026-1001',
             'first_name' => 'Ana',
             'last_name' => 'Garcia',
+            'education_level' => 'College',
             'enrollment_status' => 'enrolled',
         ]);
 
@@ -528,15 +704,25 @@ class DccCareCoreTest extends TestCase
             'student_number' => '2026-1002',
             'first_name' => 'Carlo',
             'last_name' => 'Mendoza',
+            'education_level' => 'College',
             'enrollment_status' => 'enrolled',
         ]);
 
-        // Station page renders with the queue
+        $shs = Student::create([
+            'student_number' => '2026-1003',
+            'first_name' => 'Bea',
+            'last_name' => 'Torres',
+            'education_level' => 'Senior High School',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        // Station page renders with the queue — college students only.
         $this->actingAs($this->admin)
             ->get('/rfid/register')
             ->assertOk()
             ->assertSee('Garcia, Ana')
-            ->assertSee('Mendoza, Carlo');
+            ->assertSee('Mendoza, Carlo')
+            ->assertDontSee('Torres, Bea');
 
         // Assign a card to the first student
         $this->actingAs($this->admin)
@@ -636,6 +822,7 @@ class DccCareCoreTest extends TestCase
                 'student_number' => sprintf('2026-9%03d', $i),
                 'first_name' => 'Test'.$i,
                 'last_name' => 'Paginate'.$i,
+                'education_level' => 'College',
                 'enrollment_status' => 'enrolled',
             ]);
         }
