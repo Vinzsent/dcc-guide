@@ -14,11 +14,12 @@ use Illuminate\View\View;
 class StudentController extends Controller
 {
     /**
-     * Student registry with search and filters.
+     * Student registry with search and filters — College students only.
      */
     public function index(Request $request): View
     {
         $students = Student::query()
+            ->where('education_level', 'College')
             ->with('activeRfid')
             ->withCount('offenses')
             ->when($request->filled('q'), function ($query) use ($request) {
@@ -32,7 +33,6 @@ class StudentController extends Controller
                 });
             })
             ->when($request->filled('status'), fn ($query) => $query->where('enrollment_status', $request->string('status')))
-            ->when($request->filled('level'), fn ($query) => $query->where('education_level', $request->string('level')))
             ->when($request->boolean('no_rfid'), fn ($query) => $query->whereDoesntHave('rfids', fn ($rfid) => $rfid->where('is_active', true)))
             ->orderByDesc('created_at')
             ->paginate(10)
@@ -40,8 +40,8 @@ class StudentController extends Controller
 
         return view('students.index', [
             'students' => $students,
-            'enrolledCount' => Student::where('enrollment_status', 'enrolled')->count(),
-            'cardCount' => StudentRfid::where('is_active', true)->count(),
+            'enrolledCount' => Student::where('education_level', 'College')->where('enrollment_status', 'enrolled')->count(),
+            'cardCount' => StudentRfid::activeForCollege()->count(),
         ]);
     }
 
@@ -138,13 +138,14 @@ class StudentController extends Controller
     }
 
     /**
-     * JSON search for pickers (offense form, scanner assignment).
+     * JSON search for pickers (offense form, scanner assignment) — College students only.
      */
     public function search(Request $request): JsonResponse
     {
         $term = '%'.$request->string('q')->trim().'%';
 
         $students = Student::query()
+            ->where('education_level', 'College')
             ->when(mb_strlen($request->string('q')->trim()) > 0, function ($query) use ($term) {
                 $query->where(function ($inner) use ($term) {
                     $inner->where('first_name', 'like', $term)
