@@ -192,6 +192,7 @@ a:hover { color: var(--link-hover); }
 .field { margin-bottom: 16px; }
 .field label { display: block; font: var(--label); color: var(--fg-strong); margin-bottom: 6px; }
 .field .req { color: var(--red-700); }
+.field .opt { color: var(--fg-muted); font-weight: 400; }
 .field .help { font-size: var(--step--1); color: var(--fg-muted); margin-top: 5px; }
 .input, .select, textarea.input {
   width: 100%; padding: 9px 12px;
