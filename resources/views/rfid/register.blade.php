@@ -33,13 +33,6 @@
                         <svg viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.4" stroke="currentColor" stroke-width="1.4"/><path d="M10.4 10.4 14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
                         <input class="input" id="queue-search" type="search" placeholder="Search name or student no…" oninput="applyQueueFilter()">
                     </div>
-                    <select class="select" id="queue-level" style="width: auto;" onchange="applyQueueFilter()">
-                        <option value="College" selected>College</option>
-                        <option value="Senior High School">Senior High</option>
-                        <option value="Junior High School">Junior High</option>
-                        <option value="Grade School">Elementary</option>
-                        <option value="">All levels</option>
-                    </select>
                 </div>
                 <span class="meta" id="queue-shown" style="width: 100%; text-align: right;">{{ $queue->count() }} loaded</span>
             </div>
@@ -129,15 +122,12 @@
 
     function applyQueueFilter() {
         const q = (document.getElementById('queue-search').value || '').trim().toLowerCase();
-        const level = document.getElementById('queue-level').value;
         let visible = 0;
         let firstVisible = null;
 
         queueItems().forEach((item) => {
-            const okLevel = level === '' || item.dataset.level === level;
             const hay = (item.dataset.name + ' ' + item.dataset.number).toLowerCase();
-            const okQuery = q === '' || hay.includes(q);
-            const show = okLevel && okQuery;
+            const show = q === '' || hay.includes(q);
 
             item.style.display = show ? '' : 'none';
             if (show) {
