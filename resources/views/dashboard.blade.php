@@ -6,7 +6,7 @@
     <div class="page-head">
         <div>
             <h1>Good {{ now()->format('H') < 12 ? 'morning' : (now()->format('H') < 18 ? 'afternoon' : 'evening') }}, {{ explode(' ', $user->name)[0] }}</h1>
-            <p class="sub">{{ now()->format('l, F j, Y') }} · {{ $monthCases }} case{{ $monthCases === 1 ? '' : 's' }} filed this month</p>
+            <p class="sub">{{ now()->format('l, F j, Y') }} · {{ $monthCases }} case{{ $monthCases === 1 ? '' : 's' }} this month</p>
         </div>
         <div class="page-head-actions">
             <a class="btn btn-ghost" href="{{ route('students.create') }}">Add student</a>
@@ -24,6 +24,11 @@
             <div class="k">Cases · {{ now()->format('F') }}</div>
             <div class="v">{{ $monthCases }}</div>
             <div class="d">@if ($prevMonthCases > 0 && $monthCases > $prevMonthCases)<b class="down">+{{ $monthCases - $prevMonthCases }}</b> vs {{ now()->subMonth()->format('F') }}@elseif ($prevMonthCases > 0)<b>{{ $monthCases - $prevMonthCases }}</b> vs {{ now()->subMonth()->format('F') }}@else first month on record @endif</div>
+        </div>
+        <div class="stat">
+            <div class="k">Cases · {{ $schoolYear['label'] }}</div>
+            <div class="v">{{ $syCases }}</div>
+            <div class="d">since {{ $schoolYear['starts_at']->format('F Y') }}</div>
         </div>
         <div class="stat">
             <div class="k">Open cases</div>
