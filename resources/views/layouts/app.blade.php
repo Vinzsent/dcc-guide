@@ -39,6 +39,12 @@
                 <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3.5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.8 6.2h6.4M4.8 8.4h6.4M4.8 10.6h3.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
                 <span>Register cards</span>
             </a>
+            @if (auth()->user()->isAdmin())
+                <a href="{{ route('rfid.unassign') }}" @class(['active' => request()->routeIs('rfid.unassign')])>
+                    <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3.5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.2 6.4l5.6 3.4M10.8 6.4 5.2 9.8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                    <span>Unassign cards</span>
+                </a>
+            @endif
         </nav>
 
         <div class="nav-section">Records</div>
