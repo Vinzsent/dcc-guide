@@ -36,6 +36,40 @@ class RfidStationController extends Controller
     }
 
     /**
+     * Bulk card unassignment — students whose cards are currently active.
+     * Administrators only: releasing cards is a privileged card-management task.
+     */
+    public function unassign(Request $request): View
+    {
+        abort_unless($request->user()->isAdmin(), 403, 'Only administrators can unassign RFID cards.');
+
+        $students = Student::query()
+            ->whereHas('rfids', fn ($rfid) => $rfid->where('is_active', true))
+            ->with(['rfids' => fn ($rfid) => $rfid->where('is_active', true)->with('assignedBy')])
+            ->when($request->filled('q'), function ($query) use ($request) {
+                $term = '%'.$request->string('q')->trim().'%';
+                $query->where(function ($inner) use ($term) {
+                    $inner->where('first_name', 'like', $term)
+                        ->orWhere('last_name', 'like', $term)
+                        ->orWhere('middle_name', 'like', $term)
+                        ->orWhere('student_number', 'like', $term)
+                        ->orWhereHas('rfids', fn ($rfid) => $rfid->where('card_uid', 'like', $term));
+                });
+            })
+            ->when($request->filled('level'), fn ($query) => $query->where('education_level', $request->string('level')))
+            ->orderBy('education_level')
+            ->orderBy('student_number')
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('rfid.unassign', [
+            'students' => $students,
+            'assignedCount' => StudentRfid::where('is_active', true)->count(),
+            'withoutCards' => $this->remainingCount(),
+        ]);
+    }
+
+    /**
      * Assign the scanned card to the current queue target.
      */
     public function assign(Request $request): JsonResponse
