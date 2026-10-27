@@ -56,7 +56,11 @@
             <div class="field">
                 <label for="education_level">Education level <span class="req">*</span></label>
                 <select class="select @error('education_level') invalid @enderror" id="education_level" name="education_level" required>
-                    @foreach (['Grade School', 'Junior High School', 'Senior High School', 'College'] as $level)
+                    @php($levels = collect(['College']))
+                    @if (isset($student) && $student->education_level && $student->education_level !== 'College')
+                        @php($levels->push($student->education_level))
+                    @endif
+                    @foreach ($levels as $level)
                         <option value="{{ $level }}" @selected(old('education_level', $student->education_level ?? '') === $level)>{{ $level }}</option>
                     @endforeach
                 </select>
