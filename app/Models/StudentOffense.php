@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 class StudentOffense extends Model
 {
@@ -61,6 +62,44 @@ class StudentOffense extends Model
     public function scopeOpen(Builder $query): Builder
     {
         return $query->whereIn('status', ['recorded', 'pending_review', 'under_investigation']);
+    }
+
+    /**
+     * Cases belonging to College students — the office's current scope.
+     */
+    public function scopeForCollegeStudents(Builder $query): Builder
+    {
+        return $query->whereHas('student', fn ($student) => $student->where('education_level', 'College'));
+    }
+
+    /**
+     * The school year cases are counted in — June to May, e.g. SY 2026–2027.
+     *
+     * @return array{start_year: int, label: string, starts_at: Carbon, ends_at: Carbon}
+     */
+    public static function currentSchoolYear(): array
+    {
+        $startYear = now()->month >= 6 ? now()->year : now()->year - 1;
+
+        return [
+            'start_year' => $startYear,
+            'label' => 'SY '.$startYear.'–'.($startYear + 1),
+            'starts_at' => Carbon::create($startYear, 6, 1)->startOfDay(),
+            'ends_at' => Carbon::create($startYear + 1, 5, 31)->endOfDay(),
+        ];
+    }
+
+    /**
+     * Cases whose incident date falls within the given school year (June–May).
+     */
+    public function scopeForSchoolYear(Builder $query, ?int $startYear = null): Builder
+    {
+        $year = $startYear ?? static::currentSchoolYear()['start_year'];
+
+        return $query->whereBetween('incident_at', [
+            Carbon::create($year, 6, 1)->startOfDay(),
+            Carbon::create($year + 1, 5, 31)->endOfDay(),
+        ]);
     }
 
     public function statusLabel(): string
