@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\ValidationException;
@@ -28,6 +29,15 @@ class StudentRfid extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
+    }
+
+    /**
+     * Active cards held by College students — the office's current scope.
+     */
+    public function scopeActiveForCollege(Builder $query): Builder
+    {
+        return $query->where('is_active', true)
+            ->whereHas('student', fn ($student) => $student->where('education_level', 'College'));
     }
 
     public function assignedBy(): BelongsTo
