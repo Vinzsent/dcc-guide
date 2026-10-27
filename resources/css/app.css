@@ -248,7 +248,7 @@ a:hover { color: var(--link-hover); }
 .card-body { padding: 18px; }
 
 /* Stat tiles */
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+.stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 22px; }
 .stat {
   background: var(--surface-primary); border: 1px solid var(--border-subtle);
   border-radius: var(--r-md); padding: 16px 18px; box-shadow: var(--shadow-1);
@@ -318,6 +318,7 @@ a:hover { color: var(--link-hover); }
 .field { margin-bottom: 16px; }
 .field label { display: block; font: var(--label); color: var(--fg-strong); margin-bottom: 6px; }
 .field .req { color: var(--red-700); }
+.field .opt { color: var(--fg-muted); font-weight: 400; }
 .field .help { font-size: var(--step--1); color: var(--fg-muted); margin-top: 5px; }
 .input, .select, textarea.input {
   width: 100%; padding: 9px 12px;
