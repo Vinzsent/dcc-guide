@@ -12,11 +12,12 @@ use Illuminate\View\View;
 class RfidStationController extends Controller
 {
     /**
-     * Bulk card registration station.
+     * Bulk card registration station — College students only.
      */
     public function show(Request $request): View
     {
         $queue = Student::query()
+            ->where('education_level', 'College')
             ->whereDoesntHave('rfids', fn ($rfid) => $rfid->where('is_active', true))
             ->whereIn('enrollment_status', ['enrolled', 'pending_verification'])
             ->orderBy('education_level')
@@ -24,6 +25,7 @@ class RfidStationController extends Controller
             ->get(['id', 'student_number', 'first_name', 'middle_name', 'last_name', 'suffix', 'gender', 'education_level', 'course_or_grade', 'year_level', 'section', 'enrollment_status']);
 
         $totalWithoutCards = Student::query()
+            ->where('education_level', 'College')
             ->whereDoesntHave('rfids', fn ($rfid) => $rfid->where('is_active', true))
             ->whereIn('enrollment_status', ['enrolled', 'pending_verification'])
             ->count();
@@ -136,11 +138,12 @@ class RfidStationController extends Controller
     }
 
     /**
-     * Students still waiting for a card.
+     * College students still waiting for a card.
      */
     private function remainingCount(): int
     {
         return Student::query()
+            ->where('education_level', 'College')
             ->whereDoesntHave('rfids', fn ($rfid) => $rfid->where('is_active', true))
             ->whereIn('enrollment_status', ['enrolled', 'pending_verification'])
             ->count();
