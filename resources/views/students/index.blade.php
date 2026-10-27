@@ -14,7 +14,7 @@
     <div class="page-head">
         <div>
             <h1>Student registry</h1>
-            <p class="sub">{{ $enrolledCount }} enrolled · {{ $cardCount }} RFID cards assigned</p>
+            <p class="sub">{{ $enrolledCount }} college students enrolled · {{ $cardCount }} RFID cards assigned</p>
         </div>
     </div>
 
@@ -31,17 +31,11 @@
                         <option value="{{ $status }}" @selected(request('status') === $status)>{{ str_replace('_', ' ', ucfirst($status)) }}</option>
                     @endforeach
                 </select>
-                <select class="select" name="level" style="width:auto;" onchange="this.form.submit()">
-                    <option value="">All levels</option>
-                    @foreach (['Grade School', 'Junior High School', 'Senior High School', 'College'] as $level)
-                        <option value="{{ $level }}" @selected(request('level') === $level)>{{ $level }}</option>
-                    @endforeach
-                </select>
                 <label class="chip @if (request()->boolean('no_rfid')) on @endif" style="cursor:pointer;">
                     <input type="checkbox" name="no_rfid" value="1" @checked(request()->boolean('no_rfid')) onchange="this.form.submit()" style="accent-color:currentColor;">
                     No RFID yet
                 </label>
-                @if (request()->filled('q') || request()->filled('status') || request()->filled('level') || request()->boolean('no_rfid'))
+                @if (request()->filled('q') || request()->filled('status') || request()->boolean('no_rfid'))
                     <a class="btn-link" href="{{ route('students.index') }}">Clear</a>
                 @endif
             </form>
@@ -50,7 +44,7 @@
         @if ($students->isEmpty())
             <div class="empty">
                 <div class="glyph"><svg width="18" height="18" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="2.7" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 14c.6-2.9 2.8-4.3 5.5-4.3S12.9 11.1 13.5 14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-                <b>No students match</b>
+                <b>No college students match</b>
                 Try a different search, or <a href="{{ route('students.create') }}">enroll a new student</a>.
             </div>
         @else
