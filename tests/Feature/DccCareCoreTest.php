@@ -240,6 +240,120 @@ class DccCareCoreTest extends TestCase
             ->assertJsonPath('exists', false);
     }
 
+    public function test_unassign_cards_page_lists_active_cards_and_release_works(): void
+    {
+        $student = Student::create([
+            'student_number' => '2026-0031',
+            'first_name' => 'Maria',
+            'last_name' => 'Santos',
+            'enrollment_status' => 'enrolled',
+        ]);
+
+        StudentRfid::create([
+            'student_id' => $student->id,
+            'card_uid' => 'RFID-REL-001',
+            'is_active' => true,
+            'assigned_by' => $this->admin->id,
+            'assigned_at' => now(),
+        ]);
+
+        // The page lists the student and their active card.
+        $this->actingAs($this->admin)
+            ->get('/rfid/unassign')
+            ->assertOk()
+            ->assertSee('Santos, Maria')
+            ->assertSee('RFID-REL-001');
+
+        // The existing release endpoint deactivates the card.
+        $this->actingAs($this->admin)
+            ->delete('/students/'.$student->id.'/rfid')
+            ->assertRedirect()
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('student_rfid', [
+            'card_uid' => 'RFID-REL-001',
+            'is_active' => false,
+        ]);
+
+        // The released card no longer appears on the page.
+        $this->actingAs($this->admin)
+            ->get('/rfid/unassign')
+            ->assertOk()
+            ->assertSee('No cards are assigned')
+            ->assertDontSee('RFID-REL-001');
+    }
+
+    public function test_unassign_cards_page_is_admin_only(): void
+    {
+        $coordinator = User::create([
+            'name' => 'Coordinator Carl',
+            'username' => 'c.carl',
+            'password' => 'password123',
+            'role' => 'coordinator',
+            'is_active' => true,
+        ]);
+
+        // The sidebar link is hidden from non-admins.
+        $this->actingAs($coordinator)
+            ->get('/dashboard')
+            ->assertOk()
+            ->assertDontSee('Unassign cards');
+
+        // The page itself is blocked for non-admins, even by direct URL.
+        $this->actingAs($coordinator)
+            ->get('/rfid/unassign')
+            ->assertForbidden();
+
+        // Administrators still see the link and the page.
+        $this->actingAs($this->admin)
+            ->get('/dashboard')
+            ->assertOk()
+            ->assertSee('Unassign cards');
+    }
+
+    public function test_unassign_cards_page_is_paginated_and_searchable(): void
+    {
+        for ($i = 1; $i <= 16; $i++) {
+            $student = Student::create([
+                'student_number' => sprintf('2026-1%03d', $i),
+                'first_name' => 'Paged'.$i,
+                'last_name' => 'Learner',
+                'education_level' => 'College',
+                'enrollment_status' => 'enrolled',
+            ]);
+
+            StudentRfid::create([
+                'student_id' => $student->id,
+                'card_uid' => sprintf('RFID-PAG-%04d', $i),
+                'is_active' => true,
+                'assigned_by' => $this->admin->id,
+                'assigned_at' => now(),
+            ]);
+        }
+
+        // Page 1 holds the first 15 of 16 assigned cards.
+        $this->actingAs($this->admin)
+            ->get('/rfid/unassign')
+            ->assertOk()
+            ->assertSee('of 16 assigned cards')
+            ->assertSee('Learner, Paged15')
+            ->assertDontSee('Learner, Paged16');
+
+        // Page 2 holds the remainder, with the query string preserved.
+        $this->actingAs($this->admin)
+            ->get('/rfid/unassign?page=2')
+            ->assertOk()
+            ->assertSee('Learner, Paged16')
+            ->assertDontSee('Learner, Paged15');
+
+        // The search narrows the table to the matching card.
+        $this->actingAs($this->admin)
+            ->get('/rfid/unassign?q=RFID-PAG-0016')
+            ->assertOk()
+            ->assertSee('Learner, Paged16')
+            ->assertDontSee('Learner, Paged15');
+    }
+
     public function test_offense_crud_flow_with_reference_numbers(): void
     {
         $student = Student::create([
