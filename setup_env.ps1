@@ -1,5 +1,5 @@
 $content = @"
-APP_NAME=DCC Care
+APP_NAME="DCC SDMS"
 APP_ENV=local
 APP_DEBUG=true
 APP_KEY=
