@@ -1,4 +1,4 @@
-# Voice & Tone — DCC Care
+# Voice & Tone — DCC SDMS
 
 ## Principles
 

@@ -1,6 +1,6 @@
 @extends('layouts.print')
 
-@section('title', 'Case report '.$offense->reference_no.' — DCC Care')
+@section('title', 'Case report '.$offense->reference_no.' — DCC SDMS')
 
 @section('content')
     <div class="doc-head">
@@ -12,7 +12,7 @@
             @endif
         </div>
         <div class="who">
-            <b>DCC Care</b>
+            <b>DCC SDMS</b>
             <span>Discipline Office · Official Case Record</span>
         </div>
         <div class="doc-type">
@@ -101,7 +101,7 @@
     </div>
 
     <div class="doc-foot">
-        <span>Generated from DCC Care on {{ now()->format('F j, Y · g:i a') }} by {{ $generatedBy->name }}.</span>
+        <span>Generated from DCC SDMS on {{ now()->format('F j, Y · g:i a') }} by {{ $generatedBy->name }}.</span>
         <span>Case {{ $offense->reference_no }} · recorded {{ $offense->recorded_at?->format('M j, Y') }}</span>
     </div>
 @endsection

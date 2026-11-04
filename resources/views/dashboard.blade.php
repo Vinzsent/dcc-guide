@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard — DCC Care')
+@section('title', 'Dashboard — DCC SDMS')
 
 @section('content')
     <div class="page-head">

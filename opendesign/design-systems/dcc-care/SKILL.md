@@ -1,6 +1,6 @@
-# Skill: apply dcc-care design system
+# Skill: apply dcc-sdms design system
 
-Apply the "Discipline Ledger" system to any DCC Care surface. Load
+Apply the "Discipline Ledger" system to any DCC SDMS surface. Load
 `tokens/colors_and_type.css` for values; link `ui-kit.css` from mockups.
 
 ## Identity

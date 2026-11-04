@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit profile — DCC Care')
+@section('title', 'Edit profile — DCC SDMS')
 
 @section('crumbs')
     <a href="{{ route('dashboard') }}">Dashboard</a> <span class="sep">/</span> <a href="{{ route('profile') }}">My profile</a> <span class="sep">/</span> <b>Edit</b>
@@ -10,7 +10,7 @@
     <div class="page-head">
         <div>
             <h1>Edit your profile</h1>
-            <p class="sub">Update how your name and contact details appear across DCC Care.</p>
+            <p class="sub">Update how your name and contact details appear across DCC SDMS.</p>
         </div>
     </div>
 

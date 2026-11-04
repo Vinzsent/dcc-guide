@@ -1,8 +1,8 @@
-# DCC Care — Design System "The Discipline Ledger"
+# DCC SDMS — Design System "The Discipline Ledger"
 
 ## Brand understanding
 
-DCC Care is the discipline office system for a school ("DCC"): staff log students,
+DCC SDMS (Student Discipline and Management System) is the discipline office system for a school ("DCC"): staff log students,
 record offenses, and manage RFID student IDs at the gate/registrar desk. The
 existing UI already carries a strong, credible identity — deep evergreen and
 brass gold — that reads as institutional without being corporate. This system

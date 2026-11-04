@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Register RFID cards — DCC Care')
+@section('title', 'Register RFID cards — DCC SDMS')
 
 @section('crumbs')
     <a href="{{ route('dashboard') }}">Dashboard</a> <span class="sep">/</span> <b>Register cards</b>

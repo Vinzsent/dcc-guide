@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit student — DCC Care')
+@section('title', 'Edit student — DCC SDMS')
 
 @section('crumbs')
     <a href="{{ route('dashboard') }}">Dashboard</a> <span class="sep">/</span> <a href="{{ route('students.index') }}">Students</a> <span class="sep">/</span> <b>{{ $student->full_name }}</b>
