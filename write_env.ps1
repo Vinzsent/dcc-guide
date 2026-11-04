@@ -1,5 +1,5 @@
 $builder = New-Object System.Text.StringBuilder
-$builder.AppendLine('APP_NAME=DCCCare')
+$builder.AppendLine('APP_NAME="DCC SDMS"')
 $builder.AppendLine('APP_ENV=local')
 $builder.AppendLine('APP_DEBUG=true')
 $builder.AppendLine('APP_KEY=')
@@ -36,8 +36,8 @@ $builder.AppendLine('MAIL_USERNAME=null')
 $builder.AppendLine('MAIL_PASSWORD=null')
 $builder.AppendLine('MAIL_ENCRYPTION=tls')
 $builder.AppendLine('MAIL_FROM_ADDRESS=hello@example.com')
-$builder.AppendLine('MAIL_FROM_NAME=DCCCare')
+$builder.AppendLine('MAIL_FROM_NAME="DCC SDMS"')
 $builder.AppendLine('')
-$builder.AppendLine('VITE_APP_NAME=DCCCare')
+$builder.AppendLine('VITE_APP_NAME="DCC SDMS"')
 [System.IO.File]::WriteAllText('c:\laragon\www\dcc-care\.env', $builder.ToString())
 Write-Host "Done: .env updated"
