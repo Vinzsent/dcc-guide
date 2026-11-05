@@ -1,4 +1,4 @@
-/* DCC SDMS — Student Discipline and Management System. Canonical sources in opendesign/design-systems/dcc-care/. */
+/* DCC GUIDE — Student Discipline and Management System. Canonical sources in opendesign/design-systems/dcc-care/. */
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 
@@ -11,7 +11,7 @@
 }
 
 /* ============================================================
-   DCC SDMS — Student Discipline and Management System
+   DCC GUIDE — Student Discipline and Management System
    tokens/colors_and_type.css
    Source of truth: extracted from resources/views/auth/login.blade.php
    and resources/views/dashboard.blade.php (evergreen #14442C,
@@ -124,7 +124,7 @@
 }
 
 /* ============================================================
-   DCC SDMS — UI Kit (mockup stylesheet)
+   DCC GUIDE — UI Kit (mockup stylesheet)
    Loads tokens, defines the shared component vocabulary used by
    every mockup page. Concept: "The Discipline Ledger".
    ============================================================ */
