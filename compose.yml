@@ -1,0 +1,47 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+
+    container_name: dcc-sdms-app
+    restart: unless-stopped
+
+
+    ports:
+      - "192.168.1.2:8086:80"
+
+    env_file:
+      - .db_password.env
+
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      DB_CONNECTION: mysql
+      DB_HOST: 172.19.0.1
+      DB_PORT: "3306"
+      DB_DATABASE: dcc_care
+      DB_USERNAME: dcc_sdms
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+
+    volumes:
+      - ./.env:/var/www/html/.env:ro
+      - dcc_sdms_storage:/var/www/html/storage
+
+    networks:
+      - dcc_sdms_net
+
+networks:
+  dcc_sdms_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
+
+
+volumes:
+  dcc_sdms_storage:
