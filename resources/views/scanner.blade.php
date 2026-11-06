@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'RFID Scan — DCC SDMS')
+@section('title', 'RFID Scan — DCC GUIDE')
 
 @section('crumbs')
     <a href="{{ route('dashboard') }}">Dashboard</a> <span class="sep">/</span> <b>RFID Scan</b>
