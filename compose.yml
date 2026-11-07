@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
 
 
-    container_name: dcc-sdms-app
+    container_name: dcc-guide-app
     restart: unless-stopped
 
 
@@ -30,13 +30,13 @@ services:
 
     volumes:
       - ./.env:/var/www/html/.env:ro
-      - dcc_sdms_storage:/var/www/html/storage
+      - dcc_guide_storage:/var/www/html/storage
 
     networks:
-      - dcc_sdms_net
+      - dcc_guide_net
 
 networks:
-  dcc_sdms_net:
+  dcc_guide_net:
     driver: bridge
     ipam:
       config:
@@ -44,4 +44,4 @@ networks:
 
 
 volumes:
-  dcc_sdms_storage:
+  dcc_guide_storage:
