@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sign in — DCC SDMS</title>
+    <title>Sign in — DCC GUIDE</title>
     <script>try { var t = localStorage.getItem('dcc-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -19,7 +19,7 @@
                 @endif
             </div>
             <div>
-                <div class="brand-name">DCC SDMS</div>
+                <div class="brand-name">DCC GUIDE</div>
                 <div class="brand-sub">Discipline Office</div>
             </div>
         </div>
@@ -35,7 +35,7 @@
             <div><span>CASE&nbsp;OFF-{{ date('Y') }}-0001</span><b>Classroom disruption</b></div>
         </div>
 
-        <div class="bp-foot">© {{ date('Y') }} DCC SDMS · Student Discipline and Management System</div>
+        <div class="bp-foot">© {{ date('Y') }} DCC GUIDE · Guidance, Understanding, Intervention, Discipline and Evaluation</div>
     </aside>
 
     <main class="signpane">

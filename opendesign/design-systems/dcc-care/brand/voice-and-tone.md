@@ -1,4 +1,4 @@
-# Voice & Tone — DCC SDMS
+# Voice & Tone — DCC GUIDE
 
 ## Principles
 

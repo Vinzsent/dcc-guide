@@ -1,6 +1,6 @@
 @extends('layouts.print')
 
-@section('title', 'Case history — '.$student->full_name.' — DCC SDMS')
+@section('title', 'Case history — '.$student->full_name.' — DCC GUIDE')
 
 @section('content')
     <div class="doc-head">
@@ -12,7 +12,7 @@
             @endif
         </div>
         <div class="who">
-            <b>DCC SDMS</b>
+            <b>DCC GUIDE</b>
             <span>Discipline Office · Case History Report</span>
         </div>
         <div class="doc-type">
@@ -118,7 +118,7 @@
     </div>
 
     <div class="doc-foot">
-        <span>Generated from DCC SDMS on {{ now()->format('F j, Y · g:i a') }} by {{ $generatedBy->name }}.</span>
+        <span>Generated from DCC GUIDE on {{ now()->format('F j, Y · g:i a') }} by {{ $generatedBy->name }}.</span>
         <span>Confidential — discipline records</span>
     </div>
 @endsection

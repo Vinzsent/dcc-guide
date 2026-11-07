@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add account — DCC SDMS')
+@section('title', 'Add account — DCC GUIDE')
 
 @section('crumbs')
     <a href="{{ route('dashboard') }}">Dashboard</a> <span class="sep">/</span> <a href="{{ route('users.index') }}">Accounts</a> <span class="sep">/</span> <b>Add account</b>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Report — DCC SDMS')</title>
+    <title>@yield('title', 'Report — DCC GUIDE')</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -61,13 +61,12 @@
         /* Document header */
         .doc-head { display: flex; align-items: flex-start; gap: 14px; padding-bottom: 16px; border-bottom: 3px double var(--green-800); }
         .doc-mark {
-            width: 40px; height: 40px; border-radius: 4px; flex-shrink: 0;
+            width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
             background: var(--gold-400); color: var(--green-950);
             display: grid; place-items: center; font: 700 18px/1 'Fraunces', Georgia, serif;
             overflow: hidden;
         }
-        .doc-mark img { width: 100%; height: 100%; object-fit: contain; background: #fff; border-radius: 3px; }
-        .doc-mark:has(img) { background: #fff; border: 1px solid var(--line-2); padding: 2px; }
+        .doc-mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
         .doc-head .who b { display: block; font: 600 17px/1.2 'Fraunces', Georgia, serif; color: var(--ink-1); }
         .doc-head .who span { font: 600 10px/1.6 'Instrument Sans', sans-serif; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
         .doc-head .doc-type { margin-left: auto; text-align: right; }

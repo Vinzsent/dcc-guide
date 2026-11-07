@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit case — DCC SDMS')
+@section('title', 'Edit case — DCC GUIDE')
 
 @section('crumbs')
     <a href="{{ route('dashboard') }}">Dashboard</a> <span class="sep">/</span> <a href="{{ route('offenses.index') }}">Offense ledger</a> <span class="sep">/</span> <b>{{ $offense->reference_no }}</b>
