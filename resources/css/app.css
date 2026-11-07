@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 /* DCC GUIDE — Guidance, Understanding, Intervention, Discipline and Evaluation. Canonical sources in opendesign/design-systems/dcc-care/. */
-=======
-/* DCC GUIDE — Student Discipline and Management System. Canonical sources in opendesign/design-systems/dcc-care/. */
->>>>>>> f6096ff63c2fe363ca6c475ebb20d290aca143da
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 
@@ -15,11 +11,7 @@
 }
 
 /* ============================================================
-<<<<<<< HEAD
    DCC GUIDE — Guidance, Understanding, Intervention, Discipline and Evaluation
-=======
-   DCC GUIDE — Student Discipline and Management System
->>>>>>> f6096ff63c2fe363ca6c475ebb20d290aca143da
    tokens/colors_and_type.css
    Source of truth: extracted from resources/views/auth/login.blade.php
    and resources/views/dashboard.blade.php (evergreen #14442C,
@@ -162,10 +154,10 @@ a:hover { color: var(--link-hover); }
 }
 .brand { display: flex; align-items: center; gap: 10px; padding: 6px 10px 18px; }
 .brand-mark {
-  width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+  width: 60px; height: 60px; border-radius: 50%; flex-shrink: 0;
   background: var(--gold-400); color: var(--green-950);
   display: grid; place-items: center;
-  font: 700 15px/1 var(--font-display);
+  font: 700 18px/1 var(--font-display);
 }
 .brand-name { font: 600 16px/1.2 var(--font-display); color: #fff; letter-spacing: 0.01em; }
 .brand-sub { font: 500 10.5px/1.4 var(--font-ui); color: rgba(244, 249, 245, 0.62); letter-spacing: 0.14em; text-transform: uppercase; }

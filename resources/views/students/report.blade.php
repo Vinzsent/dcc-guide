@@ -1,10 +1,6 @@
 @extends('layouts.print')
 
-<<<<<<< HEAD
 @section('title', 'Case history — '.$student->full_name.' — DCC GUIDE')
-=======
-@section('title', 'Case history — '.$student->full_name.' — DCC GIUDE')
->>>>>>> 31a3c1c (updated)
 
 @section('content')
     <div class="doc-head">
@@ -16,11 +12,7 @@
             @endif
         </div>
         <div class="who">
-<<<<<<< HEAD
             <b>DCC GUIDE</b>
-=======
-            <b>DCC GIUDE</b>
->>>>>>> 31a3c1c (updated)
             <span>Discipline Office · Case History Report</span>
         </div>
         <div class="doc-type">
@@ -126,11 +118,7 @@
     </div>
 
     <div class="doc-foot">
-<<<<<<< HEAD
         <span>Generated from DCC GUIDE on {{ now()->format('F j, Y · g:i a') }} by {{ $generatedBy->name }}.</span>
-=======
-        <span>Generated from DCC GIUDE on {{ now()->format('F j, Y · g:i a') }} by {{ $generatedBy->name }}.</span>
->>>>>>> 31a3c1c (updated)
         <span>Confidential — discipline records</span>
     </div>
 @endsection
