@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
+<<<<<<< HEAD
 @section('title', $student->full_name.' — DCC GUIDE')
+=======
+@section('title', $student->full_name.' — DCC GIUDE')
+>>>>>>> 31a3c1c (updated)
 
 @section('crumbs')
     <a href="{{ route('dashboard') }}">Dashboard</a> <span class="sep">/</span> <a href="{{ route('students.index') }}">Students</a> <span class="sep">/</span> <b>{{ $student->full_name }}</b>
