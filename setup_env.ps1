@@ -1,5 +1,9 @@
 $content = @"
+<<<<<<< HEAD
 APP_NAME="DCC GUIDE"
+=======
+APP_NAME=DCC Guide
+>>>>>>> f6096ff63c2fe363ca6c475ebb20d290aca143da
 APP_ENV=local
 APP_DEBUG=true
 APP_KEY=

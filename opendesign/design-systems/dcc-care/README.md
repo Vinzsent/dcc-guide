@@ -2,7 +2,11 @@
 
 ## Brand understanding
 
+<<<<<<< HEAD
 DCC GUIDE (Guidance, Understanding, Intervention, Discipline and Evaluation) is the discipline office system for a school ("DCC"): staff log students,
+=======
+DCC GUIDE (Student Discipline and Management System) is the discipline office system for a school ("DCC"): staff log students,
+>>>>>>> f6096ff63c2fe363ca6c475ebb20d290aca143da
 record offenses, and manage RFID student IDs at the gate/registrar desk. The
 existing UI already carries a strong, credible identity — deep evergreen and
 brass gold — that reads as institutional without being corporate. This system

@@ -1,0 +1,7 @@
+.env
+.db_password
+.db_password.env
+.git
+node_modules
+vendor
+storage/logs/*

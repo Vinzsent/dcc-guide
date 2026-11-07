@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* DCC GUIDE — Guidance, Understanding, Intervention, Discipline and Evaluation. Canonical sources in opendesign/design-systems/dcc-care/. */
+=======
+/* DCC GUIDE — Student Discipline and Management System. Canonical sources in opendesign/design-systems/dcc-care/. */
+>>>>>>> f6096ff63c2fe363ca6c475ebb20d290aca143da
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 
@@ -11,7 +15,11 @@
 }
 
 /* ============================================================
+<<<<<<< HEAD
    DCC GUIDE — Guidance, Understanding, Intervention, Discipline and Evaluation
+=======
+   DCC GUIDE — Student Discipline and Management System
+>>>>>>> f6096ff63c2fe363ca6c475ebb20d290aca143da
    tokens/colors_and_type.css
    Source of truth: extracted from resources/views/auth/login.blade.php
    and resources/views/dashboard.blade.php (evergreen #14442C,
