@@ -10,6 +10,9 @@ git pull --ff-only origin main
 echo "==> Rebuilding & restarting containers"
 docker compose up -d --build
 
+echo "==> Running database migrations"
+docker compose exec -T app php artisan migrate --force
+
 echo "==> Pruning dangling images"
 docker image prune -f
 
