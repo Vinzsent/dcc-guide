@@ -1,0 +1,16 @@
+name: Deploy to server
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, dcc-guide]
+    steps:
+      - name: Deploy
+        run: /opt/dcc-guide/deploy.sh
