@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 # Deploys the dcc-guide system. Executed by the GitHub Actions
 # self-hosted runner after every push to main.
+# Flow: pull -> build -> TEST (abort if failing) -> switch -> migrate -> health check
 set -euo pipefail
 cd /opt/dcc-guide
 
 echo "==> Pulling latest code"
 git pull --ff-only origin main
 
-echo "==> Rebuilding & restarting containers"
-docker compose up -d --build
+echo "==> Building new image (live container untouched)"
+docker compose build
+
+echo "==> Running test suite (gates the deploy)"
+docker run --rm -v /opt/dcc-guide:/app -w /app dcc-test-runner:8.3 sh -c "composer install --no-interaction --no-progress >/dev/null 2>&1; php artisan test"
+
+echo "==> Switching to the new containers"
+docker compose up -d
 
 echo "==> Running database migrations"
 docker compose exec -T app php artisan migrate --force
