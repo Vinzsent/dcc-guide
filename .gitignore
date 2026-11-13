@@ -25,3 +25,7 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# local docker secrets (never commit)
+.db_password*
+!.db_password.env.example
